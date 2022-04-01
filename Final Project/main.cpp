@@ -60,19 +60,29 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 {
                     // Find the bottommost point
-                    int ymin = points[0].y, min = 0;
+                    int xmin = points[0].x, min = 0;
+                    int ymin;
                     for (int i = 1; i < number_of_points; i++)
                     {
-                        int y = points[i].y;
+                        int x = points[i].x;
 
                         // Pick the bottom-most or chose the left
                         // most point in case of tie
-                        if ((y < ymin) || (ymin == y &&
-                                           points[i].x < points[min].x))
-                            ymin = points[i].y, min = i;
+                        if ((x < xmin) || (xmin == x &&
+                                           points[i].y < points[min].y))
+                        {
+                            xmin = points[i].x, min = i;
+                            ymin = points[i].y;
+                        }
                     }
 
-                    std::cout << "Bottommost Point " << ymin << "\n";
+
+                    sf::CircleShape shape(6);
+                    shape.setFillColor(sf::Color::Green);
+                    shape.setPosition(xmin, ymin);
+                    circle.push_back(shape);
+                    //Print Bottommost Point.
+                    std::cout << "Bottommost Point: " << xmin << "\n";
                 }
             }
         }
