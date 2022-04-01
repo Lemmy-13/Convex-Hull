@@ -17,6 +17,10 @@ int main()
     //Vector to save points shapes.
     std::vector<sf::CircleShape> circle;
 
+
+    //Size of the circle.
+    sf::CircleShape shape(6);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -38,14 +42,11 @@ int main()
                 if (find(points.begin(), points.end(), p) == points.end())
                     points.push_back(p);
 
-                //Size of the circle.
-                sf::CircleShape shape(6);
+                //Circle color.
+                shape.setFillColor(sf::Color::White);
 
                 //Click position.
                 shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(window)));
-
-                //Circle color.
-                shape.setFillColor(sf::Color::White);
 
                 //Counts the clicks.
                 ++number_of_points;
@@ -78,7 +79,7 @@ int main()
                         }
                     }
 
-                    sf::CircleShape shape(6);
+                    //Push the green circle.
                     shape.setFillColor(sf::Color::Green);
                     shape.setPosition(xmin, ymin);
                     circle.push_back(shape);
