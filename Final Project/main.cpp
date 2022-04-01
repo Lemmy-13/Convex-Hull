@@ -11,6 +11,7 @@ int main()
     //Creates the application window and adds the title.
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Convex Hull");
 
+    //Vector
     std::vector<Point> points;
 
     //Vector to save points shapes.
@@ -32,6 +33,11 @@ int main()
                 float x = event.mouseButton.x;
                 float y = event.mouseButton.y;
 
+                //Save here.
+                Point p(x, y);
+                if (find(points.begin(), points.end(), p) == points.end())
+                    points.push_back(p);
+
                 //Size of the circle.
                 sf::CircleShape shape(6);
 
@@ -41,16 +47,11 @@ int main()
                 //Circle color.
                 shape.setFillColor(sf::Color::White);
 
-                //Add
-                circle.push_back(shape);
-
-                //Counts the clicks
+                //Counts the clicks.
                 ++number_of_points;
 
-                //Save here.
-                Point p(x, y);
-                if (find(points.begin(), points.end(), p) == points.end())
-                    points.push_back(p);
+                //Push the white circle.
+                circle.push_back(shape);
             }
 
             //Adds Keyboard
@@ -59,6 +60,7 @@ int main()
                 //Space bar to stop and compute.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 {
+
                     // Find the bottommost point
                     int xmin = points[0].x, min = 0;
                     int ymin;
@@ -76,11 +78,11 @@ int main()
                         }
                     }
 
-
                     sf::CircleShape shape(6);
                     shape.setFillColor(sf::Color::Green);
                     shape.setPosition(xmin, ymin);
                     circle.push_back(shape);
+
                     //Print Bottommost Point.
                     std::cout << "Bottommost Point: " << xmin << "\n";
                 }
