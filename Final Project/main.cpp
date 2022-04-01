@@ -14,12 +14,8 @@ int main()
     //Vector
     std::vector<Point> points;
 
-    //Vector to save points shapes.
-    std::vector<sf::CircleShape> circle;
-
-
-    //Size of the circle.
-    sf::CircleShape shape(6);
+    //Check
+    int valid;
 
     while (window.isOpen())
     {
@@ -29,7 +25,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            //Adds Mouse.
+                //Adds Mouse.
             else if (event.type == sf::Event::MouseButtonPressed &&
                      event.mouseButton.button == sf::Mouse::Left)
             {
@@ -41,21 +37,9 @@ int main()
                 Point p(x, y);
                 if (find(points.begin(), points.end(), p) == points.end())
                     points.push_back(p);
-
-                //Circle color.
-                shape.setFillColor(sf::Color::White);
-
-                //Click position.
-                shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(window)));
-
-                //Counts the clicks.
-                ++number_of_points;
-
-                //Push the white circle.
-                circle.push_back(shape);
             }
 
-            //Adds Keyboard
+                //Adds Keyboard
             else if (event.type == sf::Event::KeyPressed)
             {
                 //Space bar to stop and compute.
@@ -64,8 +48,7 @@ int main()
 
                     // Find the bottommost point
                     int xmin = points[0].x, min = 0;
-                    int ymin;
-                    for (int i = 1; i < number_of_points; i++)
+                    for (int i = 1; i < points.size(); i++)
                     {
                         int x = points[i].x;
 
@@ -75,14 +58,11 @@ int main()
                                            points[i].y < points[min].y))
                         {
                             xmin = points[i].x, min = i;
-                            ymin = points[i].y;
                         }
                     }
 
-                    //Push the green circle.
-                    shape.setFillColor(sf::Color::Green);
-                    shape.setPosition(xmin, ymin);
-                    circle.push_back(shape);
+                    //Passing the value to valid.
+                    valid = xmin;
 
                     //Print Bottommost Point.
                     std::cout << "Bottommost Point: " << xmin << "\n";
@@ -93,8 +73,29 @@ int main()
         //Makes the background black.
         window.clear(sf::Color::Black);
 
-        for (const auto& r : circle)
-            window.draw(r);
+        for (const auto& r : points)
+        {
+            //Size of the circles.
+            sf::CircleShape shape(6);
+
+            //Circle position.
+            shape.setPosition(r.x, r.y);
+
+            //Checks the points to decide the bottom-most or chose the left.
+            if (r.x == valid)
+            {
+                //Circle color.
+                shape.setFillColor(sf::Color::Green);
+            }
+            else
+            {
+                //Circle color.
+                shape.setFillColor(sf::Color::White);
+            }
+
+            //Draw the shape.
+            window.draw(shape);
+        }
         window.display();
     }
 }
