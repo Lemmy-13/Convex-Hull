@@ -3,19 +3,16 @@
 #include "ch.h"
 #include <SFML/Graphics.hpp>
 
-//Counts how many clicks
-int number_of_points;
-
 int main()
 {
     //Creates the application window and adds the title.
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Convex Hull");
+    sf::RenderWindow window(sf::VideoMode(1400, 1050), "Convex Hull");
 
     //Vector
     std::vector<Point> points;
 
     //Check
-    int valid;
+    bool valid = false;
 
     while (window.isOpen())
     {
@@ -25,7 +22,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-                //Adds Mouse.
+            //Adds Mouse.
             else if (event.type == sf::Event::MouseButtonPressed &&
                      event.mouseButton.button == sf::Mouse::Left)
             {
@@ -37,6 +34,7 @@ int main()
                 Point p(x, y);
                 if (find(points.begin(), points.end(), p) == points.end())
                     points.push_back(p);
+
             }
 
                 //Adds Keyboard
@@ -45,27 +43,7 @@ int main()
                 //Space bar to stop and compute.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 {
-
-                    // Find the bottommost point
-                    int xmin = points[0].x, min = 0;
-                    for (int i = 1; i < points.size(); i++)
-                    {
-                        int x = points[i].x;
-
-                        // Pick the bottom-most or chose the left
-                        // most point in case of tie
-                        if ((x < xmin) || (xmin == x &&
-                                           points[i].y < points[min].y))
-                        {
-                            xmin = points[i].x, min = i;
-                        }
-                    }
-
-                    //Passing the value to valid.
-                    valid = xmin;
-
-                    //Print Bottommost Point.
-                    std::cout << "Bottommost Point: " << xmin << "\n";
+                    valid = true;
                 }
             }
         }
@@ -73,29 +51,38 @@ int main()
         //Makes the background black.
         window.clear(sf::Color::Black);
 
+        Polygon convex_hull = ConvexHull(points);
+        sf::ConvexShape conv;
+        conv.setFillColor(sf::Color::Black);
+        conv.setOutlineThickness(3);
+        conv.setOutlineColor(sf::Color::Green);
+        conv.setPointCount(convex_hull.points.size());
+        for (int i = 0; i < convex_hull.points.size(); ++i) {
+            Point p = convex_hull.points[i];
+            conv.setPoint(i, sf::Vector2f(p.x, p.y));
+        }
+
+        if (valid)
+        {
+            window.draw(conv);
+        }
+
         for (const auto& r : points)
         {
             //Size of the circles.
-            sf::CircleShape shape(6);
+            sf::CircleShape shape(8);
 
             //Circle position.
             shape.setPosition(r.x, r.y);
 
-            //Checks the points to decide the bottom-most or chose the left.
-            if (r.x == valid)
-            {
-                //Circle color.
-                shape.setFillColor(sf::Color::Green);
-            }
-            else
-            {
-                //Circle color.
-                shape.setFillColor(sf::Color::White);
-            }
+            //Circle color.
+            shape.setFillColor(sf::Color::White);
 
             //Draw the shape.
             window.draw(shape);
         }
         window.display();
     }
+
+    return 0;
 }
