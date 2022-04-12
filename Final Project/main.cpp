@@ -88,6 +88,8 @@ int main()
 
     sort(a.begin(), a.end(), cmp);
 
+    sf::Vector2f temp = sf::Vector2f(n, 2);
+
     int fs_i = n-3;
     vector<pair<int, int> > fi;
     fi.push_back(a[0]);
@@ -97,8 +99,27 @@ int main()
     fs.push_back(a[n-1]);
     fs.push_back(a[n-2]);
 
-    sf::Vertex linii[n][2];
-    sf::Vertex linii2[n][2];
+
+    //sf::Vertex linii[n][2]
+    //need a constant for this so gotta change it to like a vector2f position
+    //making sf::vertex arrays 
+    //sf::VertexArray test(sf::Lines, 2);
+    std::vector<sf::VertexArray> linii;
+    std::vector<sf::VertexArray> linii2;
+    for (int i = 0; i < n; i++) {
+        linii.push_back(sf::VertexArray(sf::Lines, 2));
+    }
+    for (int i = 0; i < n; i++) {
+        linii2.push_back(sf::VertexArray(sf::Lines, 2));
+    }
+    /*for (int i = 0; n < i; i++) {
+        sf::Vertex temp[] =
+        {
+            sf::Vertex(),
+            sf::Vertex()
+        };
+        linii2.push_back(temp);
+    }*/
 
     sf::Vertex line[]{
             sf::Vertex(sf::Vector2f(fi[0].first, fi[0].second)),
@@ -226,13 +247,15 @@ int main()
         for(int o = 0; o < careLinie; o++){
             linii[o][0].color = sf::Color::Red;
             linii[o][1].color = sf::Color::Red;
-            app2.draw(linii[o], 2, sf::Lines);
+            //app2.draw(linii[o], 2, sf::Lines);
+            app2.draw(linii[o]);
         }
         if(ii>=n)
             for(int o = 0; o < careLinie2; o++){
                 linii2[o][0].color = sf::Color::Red;
                 linii2[o][1].color = sf::Color::Red;
-                app2.draw(linii2[o], 2, sf::Lines);
+                //app2.draw(linii2[o], 2, sf::Lines);
+                app2.draw(linii2[o]);
             }
 
         for(int i=0; i<fi.size(); i++){
