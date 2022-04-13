@@ -30,22 +30,22 @@ grahamScan::grahamScan(std::vector<Point> points) {
 //		}
 //	}
 
-float grahamScan::CalcAnglePolar(Point vertex, Point p1, Point p2) {
+double grahamScan::CalcAnglePolar(Point vertex, Point p1, Point p2) {
 
 	//uses the Law of Cosines in order to get the angle of the three points
 
-	float ret; //the angle that will be returned
+	double ret; //the angle that will be returned
 
 	//baking some pi
-	float pi;
+	double pi;
 	pi = atan(1) * 4;
 
 	//the calculation of the length of the first line between vertex and p1
-	float lineseglength1 = sqrt(abs(pow((vertex.x - p1.x), 2) + pow((vertex.y - p1.y), 2)));
+	double lineseglength1 = sqrt(abs(pow((vertex.x - p1.x), 2) + pow((vertex.y - p1.y), 2)));
 	//second line between vertex and p2
-	float lineseglength2 = sqrt(abs(pow((vertex.x - p2.x), 2) + pow((vertex.y - p2.y), 2)));
+	double lineseglength2 = sqrt(abs(pow((vertex.x - p2.x), 2) + pow((vertex.y - p2.y), 2)));
 	//vertex and p3
-	float lineseglength3 = sqrt(abs(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2)));
+	double lineseglength3 = sqrt(abs(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2)));
 	
 	//calculates the angle in radian form using law of cosines
 	ret = acos(abs((pow(lineseglength1, 2) + pow(lineseglength2, 2) - pow(lineseglength3, 2)) / (2 * lineseglength1 * lineseglength2)));
@@ -90,8 +90,9 @@ void grahamScan::GrahamStack() {
 	SortPoints();
 	int pointSize = m_Points.size();
 	for (int i = 0; i < pointSize; i++) {
-		//if you turn clockwise pop the top point
-		Point top = this->m_Stack.top(); //used to hold the top part of the stack so
+		
+		Point top = this->m_Stack.top(); 
+		//used to hold the top part of the stack so
 		//we can get the value next to the top of the stack as well
 		m_Stack.pop();
 
@@ -101,12 +102,56 @@ void grahamScan::GrahamStack() {
 		this->m_Stack.push(top);
 
 		while (m_Stack.size() > 1 &&
-			CalcAnglePolar(top, top_next, this->m_Points[i])<= 180 ) {
+			ClockwiseTurn(top_next, top, this->m_Points[i])>0) 
+			//while the top of the stack has to turn clockwise to look at the next point
+			//pop the point from the stack and compare the next top of the stack
+		{
 			//pop the stack
 			m_Stack.pop();
 		}
 		m_Stack.push(m_Points[i]);
 	}
+}
+
+double grahamScan::ClockwiseTurn(Point vertex, Point p1, Point p2) {
+	//Will return postive number if the point turns clockwise
+	//when used for grahm scan the points should be pased in as
+	//(next_to_top(Stack), top(stack), Point) 
+
+	//uses the Law of Cosines in order to get the angle of the three points
+
+	double ret; //the angle that will be returned
+
+	//baking some pie
+	double pi;
+	pi = atan(1) * 4;
+
+	//uses dot product then modifies in order to see if the point turns clockwise or counter clockwise to look at the next point. 
+	ret = (atan2(p2.y - vertex.y, p2.x - vertex.x) -
+		atan2(p1.y - vertex.y, p1.x - vertex.x));
+	//converts the return value to degrees
+	ret *= 180;
+	ret = ret / pi;
+
+	//if the angle is more than 180 it turns counter clockwise. 
+	if (ret >= 180) {
+		ret *= -1;
+	}
+
+	return ret;
+
+}
+
+Point grahamScan::NextToTop(std::stack<Point> stack) {
+	//used to get the point next to the top of the stack
+	//mostly used to make the code look cleaner and make i
+	//easier to read at func GrahamStack().
+
+	Point Temp; 
+	stack.pop();
+	Temp = stack.top();
+
+	return Temp;
 }
 
 	//TBD!!!!!
