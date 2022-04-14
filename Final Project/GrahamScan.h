@@ -1,7 +1,6 @@
 //This class is used for the Graham's scan calculations used to compute Convex Hull
 #pragma once
 #include "Point.h"
-#include "ch.h"
 #include <vector>
 #include <stack>
 #include <utility>

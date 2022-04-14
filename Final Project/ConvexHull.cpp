@@ -192,7 +192,8 @@ void grahamScan::BottomMost(int x, int y) {
 	if (!this->m_Points.empty()) {
 		if ((point.y) > (this->m_Points[0].y)) {
 			this->m_Points.push_back(this->m_Points[0]);
-			this->m_Points[0] = point; 
+			this->m_Points[0].x = point.x; 
+			this->m_Points[0].y = point.y;
 		}
 		/*else if (point.y == this->m_Points[0].y &&
 			point.x < m_Points[0].x) {
