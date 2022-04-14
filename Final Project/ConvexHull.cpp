@@ -1,34 +1,49 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
-#include <utility>
-#include <vector>
-#include <algorithm>
-#include <math.h>			//also for M_PI
 #include "GrahamScan.h"
 
 
 //constructors
 grahamScan::grahamScan() {
 	std::vector<Point> points;
+	std::stack<Point> stack;
 	this->m_Points = points;
+	this->m_Stack = stack;
+	this->initWindow();
 }
 
 grahamScan::grahamScan(std::vector<Point> points) {
 	this->m_Points = points;
 }
 
-//private functions
-//void grahamScan::SortPoints() {
-//	if (!m_Points.empty()) {
-//		int min = 0;	//index for the min value
-//		for (int x = 0; x < this->m_Points.size(); x++) {
-//			if (m_Points[x].x < m_Points[min].x ||		//if it finds a point with the x cord less than min
-//				(m_Points[x].x == m_Points[min].x &&	//or it finds a point with the x cord = and the y-cord less
-//					m_Points[x].y < m_Points[min].y)) { //overwrite min
-//				min = x;
-//			}
-//		}
-//	}
+//private functions shouldn't needed to be used outside this class.
+void grahamScan::initWindow() {
+
+	//creates window using window.ini file
+
+	std::ifstream ifs("Config/window.ini");
+
+	std::string title = "ConvexHull Window";
+	sf::VideoMode window_bounds(800, 600);
+	unsigned framerate_limit = 120;
+	bool vertical_sync_enabled = false;
+
+
+	//We should use a gui to help set these up with the ini
+	//but this should work for now. 
+	if (ifs.is_open()) {
+		std::getline(ifs, title);
+		ifs >> window_bounds.width >> window_bounds.height;
+		ifs >> framerate_limit;
+		ifs >> vertical_sync_enabled;
+
+	}
+	this->m_window = new sf::RenderWindow(window_bounds, title);
+	this->m_window->setFramerateLimit(framerate_limit);
+	this->m_window->setVerticalSyncEnabled(vertical_sync_enabled);
+	this-> m_WindowWidth = window_bounds.width;
+	this->m_WindowHeight = window_bounds.height;
+
+}
 
 double grahamScan::CalcAnglePolar(Point vertex, Point p1, Point p2) {
 
@@ -152,6 +167,86 @@ Point grahamScan::NextToTop(std::stack<Point> stack) {
 	Temp = stack.top();
 
 	return Temp;
+}
+
+void grahamScan::DrawLine(Point p1, Point p2) {
+
+	//used to draw a blue line between two points
+	sf::VertexArray line(sf::Lines, 2);
+
+	//setting pos
+	line[0].position = sf::Vector2f(p1.x, p1.y);
+	line[1].position = sf::Vector2f(p2.x, p2.y);
+
+	//setting color
+	line[0].color = sf::Color::Blue;
+	line[1].color = sf::Color::Blue;
+
+	//drawing it to the grahmScan object window. 
+	this->m_window->draw(line);
+
+}
+
+void grahamScan::BottomMost(int x, int y) {
+	Point point = Point(x, y);
+	if (!this->m_Points.empty()) {
+		if ((point.y) > (this->m_Points[0].y)) {
+			this->m_Points.push_back(this->m_Points[0]);
+			this->m_Points[0] = point; 
+		}
+		/*else if (point.y == this->m_Points[0].y &&
+			point.x < m_Points[0].x) {
+			this->m_Points.push_back(this->m_Points[0]);
+			this->m_Points[0] = point;
+		}*/
+		else {
+			this->m_Points.push_back(point);
+		}
+	}
+	else {
+		this->m_Points.push_back(point);
+	}
+}
+
+
+//The Run functions for the differnt types of ConvexHull we are building
+void grahamScan::RunStandardHull() {
+	while (this->m_window->isOpen()) {
+		//Process events
+		sf::Event event;
+		while (this->m_window->pollEvent(event)) 
+		{
+			//Close window if they click exit.
+			if (event.type == sf::Event::Closed) {
+				this->m_window->close();
+			}
+			
+			//button presses
+			
+			if (event.type == sf::Event::MouseButtonPressed) 
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					//Point temp(event.mouseButton.x, event.mouseButton.y);
+					this->BottomMost(event.mouseButton.x, event.mouseButton.y);//pushes back the Point or reassigns to the front if it's the bottomost point
+					//this->m_Points.push_back(temp);
+				}
+			}
+		}
+
+		this->m_window->clear();
+
+		for (int i = 0; i < this->m_Points.size(); i++) {
+			sf::CircleShape whitedot(3);
+			whitedot.setPosition(this->m_Points[i].x, this->m_Points[i].y);
+			std::cout << i <<" "<< this->m_Points[i].x << " " << this->m_Points[i].y << std::endl;
+			this->m_window->draw(whitedot);
+		}
+
+		this->m_window->display();
+
+	}
+
 }
 
 	//TBD!!!!!

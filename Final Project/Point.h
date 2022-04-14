@@ -7,9 +7,9 @@ class Point
 {
 public:
     Point() : x{0}, y{0}, polar_angle{ NULL } {};
-    Point(double f1, double f2) : x{ f1 }, y{ f2 }, polar_angle{ NULL }{};
-    double x;
-    double y;
+    Point(int f1, int f2) : x{ f1 }, y{ f2 }, polar_angle{ NULL }{};
+    int x;
+    int y;
     double polar_angle;
 };
 
