@@ -47,24 +47,27 @@ void grahamScan::initWindow() {
 
 double grahamScan::CalcAnglePolar(Point vertex, Point p1, Point p2) {
 
-	//uses the Law of Cosines in order to get the angle of the three points
-
 	double ret; //the angle that will be returned
 
 	//baking some pi
 	double pi;
 	pi = atan(1) * 4;
 
-	//the calculation of the length of the first line between vertex and p1
-	double lineseglength1 = sqrt(abs(pow((vertex.x - p1.x), 2) + pow((vertex.y - p1.y), 2)));
-	//second line between vertex and p2
-	double lineseglength2 = sqrt(abs(pow((vertex.x - p2.x), 2) + pow((vertex.y - p2.y), 2)));
-	//vertex and p3
-	double lineseglength3 = sqrt(abs(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2)));
-	
-	//calculates the angle in radian form using law of cosines
-	ret = acos(abs((pow(lineseglength1, 2) + pow(lineseglength2, 2) - pow(lineseglength3, 2)) / (2 * lineseglength1 * lineseglength2)));
-	
+	//this will gets the angle based on the x axis and goes clockwise to the point in order to get the angle.
+	double compareX = p1.x;
+	double compareY = vertex.y;
+
+	compareX -= vertex.x;
+	compareY -= p1.y;
+
+	ret = atan2(compareY, compareX);
+
+	if (ret < 0) {
+		ret = std::abs(ret);
+	}
+	else {
+		ret = 2 * pi - ret;
+	}
 	//converts the return value to degrees
 	ret *= 180;
 	ret = ret / pi;
@@ -82,6 +85,8 @@ void grahamScan::AssignPolarAngle() {
 	//defines an int so .size() isn't repeatedly called
 	int vecLength = this->m_Points.size();
 
+	//sets point [0] polar angle to null in case of previous calls
+	this->m_Points[0].polar_angle = NULL;
 	//uses CalcAngle against the first point in the Points vector to calculate and assign an angle
 	for (int x = 1; x < vecLength; x++) {
 		Point xAxis = Point(this->m_Points[x].x, this->m_Points[0].y);
@@ -93,31 +98,27 @@ void grahamScan::SortPoints() {
 	//this will give each point an angle 
 	AssignPolarAngle();
 	//this sorts the vector base on polar Angle 
-	std::sort(this->m_Points.begin(), this->m_Points.end(),
+	std::sort(this->m_Points.begin()+1, this->m_Points.end(),
 		[](auto& prev, auto& next) {
-			return prev.polar_angle < next.polar_angle;
+			if (prev.polar_angle == next.polar_angle) {
+				//really dumb workaround for the sort breaking if the 
+				//polar angles are the equal
+				prev.polar_angle += .0000001;
+			}
+			return prev.polar_angle >= next.polar_angle;
 		});
 }
 
 void grahamScan::GrahamStack() {
 	//should only be run if there are more than 3 points
-	
+	this->m_Stack = std::stack<Point>();
 	SortPoints();
 	int pointSize = m_Points.size();
+
+	//cylces through the points in the list.
 	for (int i = 0; i < pointSize; i++) {
-		
-		Point top = this->m_Stack.top(); 
-		//used to hold the top part of the stack so
-		//we can get the value next to the top of the stack as well
-		m_Stack.pop();
-
-		Point top_next = this->m_Stack.top();
-
-		this->m_Stack.push(top_next);
-		this->m_Stack.push(top);
-
 		while (m_Stack.size() > 1 &&
-			ClockwiseTurn(top_next, top, this->m_Points[i])>0) 
+			this->ClockwiseTurn(this->m_Stack.top(), this->NextToTop(), this->m_Points[i]) >= 0)
 			//while the top of the stack has to turn clockwise to look at the next point
 			//pop the point from the stack and compare the next top of the stack
 		{
@@ -125,6 +126,7 @@ void grahamScan::GrahamStack() {
 			m_Stack.pop();
 		}
 		m_Stack.push(m_Points[i]);
+		
 	}
 }
 
@@ -133,8 +135,6 @@ double grahamScan::ClockwiseTurn(Point vertex, Point p1, Point p2) {
 	//when used for grahm scan the points should be pased in as
 	//(next_to_top(Stack), top(stack), Point) 
 
-	//uses the Law of Cosines in order to get the angle of the three points
-
 	double ret; //the angle that will be returned
 
 	//baking some pie
@@ -142,8 +142,20 @@ double grahamScan::ClockwiseTurn(Point vertex, Point p1, Point p2) {
 	pi = atan(1) * 4;
 
 	//uses dot product then modifies in order to see if the point turns clockwise or counter clockwise to look at the next point. 
-	ret = (atan2(p2.y - vertex.y, p2.x - vertex.x) -
-		atan2(p1.y - vertex.y, p1.x - vertex.x));
+	
+
+	double abvecX = p1.x - vertex.x;
+	double abvecY = p1.y - vertex.y;
+
+	double bcvecX = vertex.x - p2.x;
+	double bcvecY = vertex.y - p2.y;
+
+	double dotproduct = (abvecX * bcvecX) + (abvecY * bcvecY);
+
+	double determinate = (abvecX * bcvecY) - (abvecY * bcvecX);
+
+	ret = atan2(determinate, dotproduct);
+;
 	//converts the return value to degrees
 	ret *= 180;
 	ret = ret / pi;
@@ -153,20 +165,24 @@ double grahamScan::ClockwiseTurn(Point vertex, Point p1, Point p2) {
 		ret *= -1;
 	}
 
+
 	return ret;
 
 }
 
-Point grahamScan::NextToTop(std::stack<Point> stack) {
+Point grahamScan::NextToTop() {
 	//used to get the point next to the top of the stack
 	//mostly used to make the code look cleaner and make i
 	//easier to read at func GrahamStack().
+	Point top = this->m_Stack.top();//hold the top point so we can put it back onto the top of the stack
+	Point nextTo; //holds the point under the top
 
-	Point Temp; 
-	stack.pop();
-	Temp = stack.top();
+	this->m_Stack.pop(); //pop point top from the stack 
+	nextTo = this->m_Stack.top();// reads the point underneath the point that got poped
 
-	return Temp;
+	this->m_Stack.push(top);//places the point that got poped back onto the stack
+
+	return nextTo;//returns the point under the top point.
 }
 
 void grahamScan::DrawLine(Point p1, Point p2) {
@@ -187,7 +203,13 @@ void grahamScan::DrawLine(Point p1, Point p2) {
 
 }
 
+//calculates the bottomost point
 void grahamScan::BottomMost(int x, int y) {
+	//essentially just compares what would be the bottommost point
+	//and if its further down it sets it at m_points[0]
+	//which is the bottom most point 
+	//then pushes the other point to the end of the list
+	//it will be sorted later.
 	Point point = Point(x, y);
 	if (!this->m_Points.empty()) {
 		if ((point.y) > (this->m_Points[0].y)) {
@@ -195,11 +217,6 @@ void grahamScan::BottomMost(int x, int y) {
 			this->m_Points[0].x = point.x; 
 			this->m_Points[0].y = point.y;
 		}
-		/*else if (point.y == this->m_Points[0].y &&
-			point.x < m_Points[0].x) {
-			this->m_Points.push_back(this->m_Points[0]);
-			this->m_Points[0] = point;
-		}*/
 		else {
 			this->m_Points.push_back(point);
 		}
@@ -228,34 +245,81 @@ void grahamScan::RunStandardHull() {
 			{
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					//Point temp(event.mouseButton.x, event.mouseButton.y);
-					this->BottomMost(event.mouseButton.x, event.mouseButton.y);//pushes back the Point or reassigns to the front if it's the bottomost point
-					//this->m_Points.push_back(temp);
+					//pushes back the Point or reassigns to the front if it's the bottomost point
+					this->BottomMost(event.mouseButton.x, event.mouseButton.y);
+					
 				}
 			}
+			
+			if (event.type == sf::Event::KeyPressed) {
+				//when enter is hit it calculates the Hull's stack
+				if (event.key.code == sf::Keyboard::Enter) {
+					if (this->m_Points.size() > 3) {
+						this->GrahamStack();
+					}
+				}
+			}
+
 		}
 
 		this->m_window->clear();
 
+		//draws the dots everywhere the user clicked
 		for (int i = 0; i < this->m_Points.size(); i++) {
 			sf::CircleShape whitedot(3);
-			whitedot.setPosition(this->m_Points[i].x, this->m_Points[i].y);
-			std::cout << i <<" "<< this->m_Points[i].x << " " << this->m_Points[i].y << std::endl;
+			whitedot.setPosition(this->m_Points[i].x - 2, this->m_Points[i].y -2 );
 			this->m_window->draw(whitedot);
 		}
+		
+		if (!this->m_Stack.empty()) {
+			//gets a temp space to copy the main stack into it
+			std::stack<Point> tempStack = this->m_Stack;
+
+			//gets the first point from the stack so we know where the bottommost point is
+			Point firstpoint = tempStack.top();
+			//for the stack loop lower down.
+			Point stackone = tempStack.top();
+			tempStack.pop();
+
+			//draws the first green dot.
+			sf::CircleShape greendot(3);
+			greendot.setFillColor(sf::Color::Green);
+			greendot.setPosition((stackone.x - 2), (stackone.y - 2));
+			this->m_window->draw(greendot);
+
+			while (!tempStack.empty()) {
+				//sets the second point to the next one in the stack
+				Point stacktwo = tempStack.top();
+				tempStack.pop();
+
+				//draws the greendot at the second pos each loop
+				greendot.setPosition((stackone.x - 2), (stackone.y - 2));
+				this->m_window->draw(greendot);
+
+				//draws the line between the two points
+				this->DrawLine(stackone, stacktwo);
+
+				//shuffles point two to point one. 
+				stackone = stacktwo;
+
+			}
+			//drawing the green dot and a line to the first point to complete the hull.
+			//draws the line from the last point to the first point
+			this->DrawLine(firstpoint, stackone);
+		}
+
+		//setting the bottomost point to blue
+		if (this->m_Points.size() > 0) {
+			sf::CircleShape bluedot(3);
+			bluedot.setPosition((this->m_Points[0].x - 2), (this->m_Points[0].y - 2));
+			bluedot.setFillColor(sf::Color::Blue);
+			this->m_window->draw(bluedot);
+		}
+
 
 		this->m_window->display();
 
 	}
 
+
 }
-
-	//TBD!!!!!
-
-	//the next part needs a way to compare a point with the P0 (the min
-	//Point that was found above) and the x axis, to find the angle 
-	//those points make and then sort the Points based on the angle they made.
-	//supposedly we don't need to compute the angle becasue we could use
-	//the dot product or some math-angle-magic stuff. Ima leave that up to
-	//Lemmy becasue he's the best at math lol. 
-//}

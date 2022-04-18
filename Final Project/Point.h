@@ -3,6 +3,8 @@
 
 #include <vector>
 
+//used to hold point data
+//more flexable and easy to read than using pairs the entire time
 class Point
 {
 public:

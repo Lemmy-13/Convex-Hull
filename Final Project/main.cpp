@@ -3,9 +3,6 @@
 
 int main()
 {
-    //spaggetti test;
-    //test.run();
-
     grahamScan hull = grahamScan();
     hull.RunStandardHull();
 }

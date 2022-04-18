@@ -5,16 +5,11 @@
 #include <stack>
 #include <utility>
 #include <algorithm>
-#include <fstream>			//used for if streams
-#include <math.h>			//also for M_PI
+#include <fstream>			
+#include <math.h>			
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 
-
-//TBD
-//Make Run func that holds the while window while loop
-//make a draw line func onto window
-//add clock stuff
 class grahamScan {
 private:
 	std::vector<Point> m_Points;		//used to store all points that the users inputs by clicking in the window
@@ -36,11 +31,11 @@ private:
 
 	double ClockwiseTurn(Point vertex, Point p1, Point p2); //will return >= 0 if clockwise. 
 
-	Point NextToTop(std::stack<Point> stack); //used to get the point next to the top of the stack
+	Point NextToTop(); //used to get the point next to the top of the stack
 	void initWindow(); //used to set up the window thing utilizing a config ini
 
-	void DrawLine(Point p1, Point p2);
-	void BottomMost(int x, int y);
+	void DrawLine(Point p1, Point p2); //used to draw a blue line between two points
+	void BottomMost(int x, int y);	//used to compare if the x and y are lower than m_points[0]
 public:
 	//Constructors
 	grahamScan();
