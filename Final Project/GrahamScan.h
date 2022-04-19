@@ -19,8 +19,6 @@ private:
 	int m_WindowHeight;					//used for the height of the window
 
 	//private functions
-	//float CounterClockWise(Point, Point, Point);	//this function will take three points and tell if the angle made by the points
-												//is clockwise. If the function returns > 0 it's Counter clockwise. < Clockwise. = 0  Colinear
 	void AssignPolarAngle();	//uses the vector of points to assign the polar angle to the points with the vector having to be in order
 								//with m_points[0] being the bottomost point. 
 	void SortPoints();	//used to sort m_Points in order from the angle that point P0(point with the smallest x) and
@@ -43,4 +41,7 @@ public:
 
 	//run functions
 	void RunStandardHull(); //used for running the standard click points and compute setup.
+
+	friend class visualConvexHull;
 };
+

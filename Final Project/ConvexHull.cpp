@@ -112,7 +112,7 @@ void grahamScan::SortPoints() {
 void grahamScan::GrahamStack() {
 	//should only be run if there are more than 3 points
 	this->m_Stack = std::stack<Point>();
-	SortPoints();
+	this->SortPoints();
 	int pointSize = m_Points.size();
 
 	//cylces through the points in the list.
