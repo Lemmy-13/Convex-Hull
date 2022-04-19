@@ -108,6 +108,8 @@ void visualConvexHull::DrawGreenLine(Point p1, Point p2) {
 //public functions
 
 void visualConvexHull::visualConvexHullRun() {
+	//sets the title of the window to the correct title. 
+	this->h_graham.m_window->setTitle("Visual ConvexHull Window");
 
 	//declaring variables 
 	bool enter_pressed = false;	//used to determine if enter was pressed and will
