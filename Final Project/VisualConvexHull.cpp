@@ -184,6 +184,17 @@ void visualConvexHull::visualConvexHullRun() {
 					hold = false;
 					std::cout << "Hold is off" << std::endl;
 				}
+				//will cause the convex hull to instantly draw like the orgininal GrahamScan-convexhull
+				if (event.key.code == sf::Keyboard::T) {
+					if (this->waitSeconds == 0) {
+						this->waitSeconds = 500;
+						std::cout << "Speed set to 500" << std::endl;
+					}
+					else if (this->waitSeconds > 0) {
+						this->waitSeconds = 0;
+						std::cout << "Speed set to instant" << std::endl;
+					}
+				}
 
 			}
 
