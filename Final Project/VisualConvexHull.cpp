@@ -116,6 +116,10 @@ void visualConvexHull::visualConvexHullRun() {
 	//incorporate a delay at the end of the loop
 	int count = 0;		//used to count what point in the grahamscan.m_points is being compared
 
+	bool hold = true; //used to indicate if the final convex hull will be kept on the screen
+	bool lastrun = false; //used to determine if the first point was added to the top of the stack
+	//also determines if graham scan is finished drawing. neaded for holding the hull on screen
+	//if the hold bool is set to true. 
 	while (this->h_graham.m_window->isOpen()) {
 		//Process events
 		sf::Event event;
@@ -134,7 +138,8 @@ void visualConvexHull::visualConvexHullRun() {
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					//pushes back the Point or reassigns to the front if it's the bottomost point
-					if (!enter_pressed) {
+					if (!enter_pressed ||
+						(enter_pressed && lastrun)) {
 						this->h_graham.BottomMost(event.mouseButton.x, event.mouseButton.y);
 					}
 				}
@@ -145,7 +150,13 @@ void visualConvexHull::visualConvexHullRun() {
 				if (event.key.code == sf::Keyboard::Enter) {
 					//only if there are at least 3 points
 					if (this->h_graham.m_Points.size() > 2) {
-						//this->VisualStack();
+						if (hold && lastrun) {
+							this->h_redDots.clear();
+							this->h_visualStack = std::stack<Point>();
+							count = 0;
+							lastrun = false;
+						}
+
 						enter_pressed = true;
 					}
 				}
@@ -162,6 +173,16 @@ void visualConvexHull::visualConvexHullRun() {
 						this->waitSeconds += 500;
 						std::cout << this->waitSeconds << std::endl;
 					}
+				}
+				//p sets the hold to true so the code will hold the final convex hull at the end
+				if (event.key.code == sf::Keyboard::P) {
+					hold = true;
+					std::cout << "Hold is on" << std::endl;
+				}
+				//o will set it to false so it doens't hold it 
+				if (event.key.code == sf::Keyboard::O) {
+					hold = false;
+					std::cout << "Hold is off" << std::endl;
 				}
 
 			}
@@ -213,7 +234,7 @@ void visualConvexHull::visualConvexHullRun() {
 		//this is where most of the calculations are done through visualstack.
 		else if (
 			enter_pressed&&
-			count < this->h_graham.m_Points.size()) {
+			count < this->h_graham.m_Points.size() && !lastrun) {
 
 			//if visualstack returns true that means the point it the top
 			//of the stack turned counterclockwise to look at the point
@@ -242,7 +263,7 @@ void visualConvexHull::visualConvexHullRun() {
 		//drawing the bottomost point to blue if enter hasn't been pressed
 		//if enter has been pressed the point being compared should be blue.
 		if (this->h_graham.m_Points.size() > 0 &&
-			!enter_pressed) {
+			(!enter_pressed || lastrun)) {
 			sf::CircleShape bluedot(3);
 			bluedot.setPosition((this->h_graham.m_Points[0].x - 2), (this->h_graham.m_Points[0].y - 2));
 			bluedot.setFillColor(sf::Color::Blue);
@@ -254,13 +275,23 @@ void visualConvexHull::visualConvexHullRun() {
 		//and have it iterate again. 
 		if (count == (this->h_graham.m_Points.size() ) &&
 			enter_pressed &&
-			!action) {
-			this->VisualStack(count);
-			action = true;
-			enter_pressed = false;
-			this->h_redDots.clear();
-			this->h_visualStack = std::stack<Point>();
-			count = 0;
+			!action ) {
+			//will run one more time to add the first point to the top of the stack.
+			//mostly just used for the continous run. 
+			if (!lastrun) {
+				this->VisualStack(count);
+				lastrun = true; //also used to determine if grahamscan has finished running.
+			}
+
+			//if hold isn't activated then it clear the data sets like usual
+			if (!hold) {
+				action = true;
+				enter_pressed = false;
+				this->h_redDots.clear();
+				this->h_visualStack = std::stack<Point>();
+				count = 0;
+				lastrun = false;
+			}
 		}
 
 
