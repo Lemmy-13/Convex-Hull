@@ -3,12 +3,12 @@
 
 //constructors
 visualConvexHull::visualConvexHull() {
-	this->h_graham = grahamScan();
+	//this->h_graham = grahamScan();
 	this->waitSeconds = 1000;
 }
 
 visualConvexHull::visualConvexHull(std::vector<Point> points) {
-	this->h_graham = grahamScan(points);
+	//this->h_graham = grahamScan(points);
 	this->waitSeconds = 1000;
 }
 
