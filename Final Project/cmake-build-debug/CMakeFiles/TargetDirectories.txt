@@ -1,3 +1,0 @@
-/Users/lemmy/Documents/GitHub/Convex-Hull/Final Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/lemmy/Documents/GitHub/Convex-Hull/Final Project/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/lemmy/Documents/GitHub/Convex-Hull/Final Project/cmake-build-debug/CMakeFiles/HelloSFML.dir
