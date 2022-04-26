@@ -20,7 +20,7 @@
   <h3 align="center">CSC 212 Final Project</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Created by William Robichaux, Aaron Tallardy, Lemuel Alvarez, Lucas Riccitelli
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
