@@ -52,13 +52,10 @@ For our final project we chose the Graham Scan Algorithm. We were tasked with us
 
 What's going on here??
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
+We have three separate implementations of this algorithm:
+User Inputed Points
+File Inputed Points
+Finger Counter
 
 ### Built With
 
