@@ -1,8 +1,14 @@
-#include "Spagetti.h"
 #include "GrahamScan.h"
+#include "VisualConvexHull.h"
+#include "Menu.h"
+
 
 int main()
 {
-    grahamScan hull = grahamScan();
-    hull.RunStandardHull();
+    //visualConvexHull hull = visualConvexHull();
+    //hull.visualConvexHullRun();
+
+
+    Menu jerry = Menu(1600,900);
+
 }
