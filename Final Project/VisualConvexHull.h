@@ -28,4 +28,5 @@ public:
 	//public functions
 
 	void visualConvexHullRun();//the run function
+    void playSound();
 };

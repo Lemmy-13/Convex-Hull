@@ -22,8 +22,8 @@ void grahamScan::initWindow() {
 
 	std::ifstream ifs("Config/window.ini");
 
-	std::string title = "ConvexHull Window";
-	sf::VideoMode window_bounds(800, 600);
+	std::string title = "Convex Hull";
+	sf::VideoMode window_bounds(1440, 900);
 	unsigned framerate_limit = 120;
 	bool vertical_sync_enabled = false;
 
@@ -195,8 +195,8 @@ void grahamScan::DrawLine(Point p1, Point p2) {
 	line[1].position = sf::Vector2f(p2.x, p2.y);
 
 	//setting color
-	line[0].color = sf::Color::Blue;
-	line[1].color = sf::Color::Blue;
+	line[0].color = sf::Color::Yellow;
+	line[1].color = sf::Color::Yellow;
 
 	//drawing it to the grahmScan object window. 
 	this->m_window->draw(line);
@@ -266,7 +266,7 @@ void grahamScan::RunStandardHull() {
 
 		//draws the dots everywhere the user clicked
 		for (int i = 0; i < this->m_Points.size(); i++) {
-			sf::CircleShape whitedot(3);
+			sf::CircleShape whitedot(6);
 			whitedot.setPosition(this->m_Points[i].x - 2, this->m_Points[i].y -2 );
 			this->m_window->draw(whitedot);
 		}
@@ -282,7 +282,7 @@ void grahamScan::RunStandardHull() {
 			tempStack.pop();
 
 			//draws the first green dot.
-			sf::CircleShape greendot(3);
+			sf::CircleShape greendot(6);
 			greendot.setFillColor(sf::Color::Green);
 			greendot.setPosition((stackone.x - 2), (stackone.y - 2));
 			this->m_window->draw(greendot);
@@ -310,9 +310,9 @@ void grahamScan::RunStandardHull() {
 
 		//setting the bottomost point to blue
 		if (this->m_Points.size() > 0) {
-			sf::CircleShape bluedot(3);
+			sf::CircleShape bluedot(6);
 			bluedot.setPosition((this->m_Points[0].x - 2), (this->m_Points[0].y - 2));
-			bluedot.setFillColor(sf::Color::Blue);
+			bluedot.setFillColor(sf::Color::Yellow);
 			this->m_window->draw(bluedot);
 		}
 

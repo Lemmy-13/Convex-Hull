@@ -40,9 +40,9 @@ bool visualConvexHull::VisualStack(int count) {
 	count = count % (this->h_graham.m_Points.size());
 	if (this->h_graham.m_Points.size() > 2) {
 		//draws point being checked blue.
-		sf::CircleShape bluedot(3);
+		sf::CircleShape bluedot(6);
 		bluedot.setPosition((this->h_graham.m_Points[count].x - 2), (this->h_graham.m_Points[count].y - 2));
-		bluedot.setFillColor(sf::Color::Blue);
+		bluedot.setFillColor(sf::Color::Yellow);
 		this->h_graham.m_window->draw(bluedot);
 
 		
@@ -109,7 +109,7 @@ void visualConvexHull::DrawGreenLine(Point p1, Point p2) {
 
 void visualConvexHull::visualConvexHullRun() {
 	//sets the title of the window to the correct title. 
-	this->h_graham.m_window->setTitle("Visual ConvexHull Window");
+	this->h_graham.m_window->setTitle("Convex Hull");
 	//declaring variables 
 	bool enter_pressed = false;	//used to determine if enter was pressed and will
 	//go through an entire convexHull visual before returning to false.
@@ -122,7 +122,9 @@ void visualConvexHull::visualConvexHullRun() {
 	//also determines if graham scan is finished drawing. neaded for holding the hull on screen
 	//if the hold bool is set to true. 
 
-	bool pause = false;	//used to determine if the program should be paused. 
+	bool pause = false;	//used to determine if the program should be paused.
+
+
 	while (this->h_graham.m_window->isOpen()) {
 		//Process events
 		sf::Event event;
@@ -221,7 +223,7 @@ void visualConvexHull::visualConvexHullRun() {
 
 			//draws the dots where the user clicked
 			for (int i = 0; i < this->h_graham.m_Points.size(); i++) {
-				sf::CircleShape whitedot(3);
+				sf::CircleShape whitedot(6);
 				whitedot.setPosition(this->h_graham.m_Points[i].x - 2, this->h_graham.m_Points[i].y - 2);
 				this->h_graham.m_window->draw(whitedot);
 			}
@@ -236,7 +238,7 @@ void visualConvexHull::visualConvexHullRun() {
 				while (tempStack.size() > 1) {
 					Point temp = tempStack.top();
 
-					sf::CircleShape greendot(3);
+					sf::CircleShape greendot(6);
 					greendot.setFillColor(sf::Color::Green);
 					greendot.setPosition((temp.x - 2), (temp.y - 2));
 					this->h_graham.m_window->draw(greendot);
@@ -280,7 +282,7 @@ void visualConvexHull::visualConvexHullRun() {
 			if (enter_pressed &&
 				!this->h_redDots.empty()) {
 				for (int i = 0; i < this->h_redDots.size(); i++) {
-					sf::CircleShape reddot(3);
+					sf::CircleShape reddot(6);
 					reddot.setPosition((this->h_redDots[i].x - 2), (this->h_redDots[i].y - 2));
 					reddot.setFillColor(sf::Color::Red);
 					this->h_graham.m_window->draw(reddot);
@@ -292,9 +294,9 @@ void visualConvexHull::visualConvexHullRun() {
 			//if enter has been pressed the point being compared should be blue.
 			if (this->h_graham.m_Points.size() > 0 &&
 				(!enter_pressed || lastrun)) {
-				sf::CircleShape bluedot(3);
+				sf::CircleShape bluedot(6);
 				bluedot.setPosition((this->h_graham.m_Points[0].x - 2), (this->h_graham.m_Points[0].y - 2));
-				bluedot.setFillColor(sf::Color::Blue);
+				bluedot.setFillColor(sf::Color::Yellow);
 				this->h_graham.m_window->draw(bluedot);
 			}
 
@@ -335,6 +337,5 @@ void visualConvexHull::visualConvexHullRun() {
 
 		}
 	}
-
 
 }

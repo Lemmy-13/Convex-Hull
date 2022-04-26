@@ -3,7 +3,7 @@
 
 Menu::Menu(float width, float height)
 {
-    if(!font.loadFromFile("MenuFiles/FSEX300.ttf"))
+    if(!font.loadFromFile("/Users/lemmy/Documents/Projects/Final/Menufiles/FSEX300.ttf"))
     {
 
     }
@@ -13,11 +13,11 @@ Menu::Menu(float width, float height)
     text.setCharacterSize(150);
     text.setFillColor(sf::Color::Yellow);
     text.setString("Convex Hull");
-    text.setPosition(550.f, 50.f);
+    text.setPosition(400.f, 50.f);
 
     //Option 1
     menu[0].setFont(font);
-    menu[0].setCharacterSize(65);
+    menu[0].setCharacterSize(60);
     menu[0].setFillColor(sf::Color::Green);
     menu[0].setString("Click or Touch");
     menu[0].setOrigin(menu[0].getLocalBounds().width / 2, menu[0].getLocalBounds().height / 2);
@@ -25,7 +25,7 @@ Menu::Menu(float width, float height)
 
     //Option 2
     menu[1].setFont(font);
-    menu[1].setCharacterSize(65);
+    menu[1].setCharacterSize(60);
     menu[1].setFillColor(sf::Color::White);
     menu[1].setString("Read from a File \n");
     menu[1].setOrigin(menu[1].getLocalBounds().width / 2, menu[1].getLocalBounds().height / 2);
@@ -33,7 +33,7 @@ Menu::Menu(float width, float height)
 
     //Option 3
     menu[2].setFont(font);
-    menu[2].setCharacterSize(65);
+    menu[2].setCharacterSize(60);
     menu[2].setFillColor(sf::Color::White);
     menu[2].setString("Finger Count\n");
     menu[2].setOrigin(menu[2].getLocalBounds().width / 2, menu[2].getLocalBounds().height / 2);
@@ -41,7 +41,7 @@ Menu::Menu(float width, float height)
 
     //Option 4
     menu[3].setFont(font);
-    menu[3].setCharacterSize(65);
+    menu[3].setCharacterSize(60);
     menu[3].setFillColor(sf::Color::White);
     menu[3].setString("Exit");
     menu[3].setOrigin(menu[3].getLocalBounds().width / 2, menu[3].getLocalBounds().height / 2);
@@ -65,13 +65,14 @@ void Menu::runVisHull() {
 }
 
 //used to run the menu that will promt the user into different parts of the program as menus do.
-void Menu::runMenu(float width, float height) {
+void Menu::runMenu(float width, float height)
+{
     sf::RenderWindow window(sf::VideoMode(width, height), "Menu");
 
     // -- Background -- //
     float frame_time = (float)1 / (float)60;
     sf::Texture background;
-    if (!background.loadFromFile("MenuFiles/BG1.jpg"))
+    if (!background.loadFromFile("/Users/lemmy/Documents/Projects/Final/Menufiles/BG1.jpg"))
         exit(1);
     background.setRepeated(true);
 
@@ -121,6 +122,9 @@ void Menu::runMenu(float width, float height) {
                     case 2:
                         std::cout << "Option 3 was pressed" << std::endl;
                         //Here
+                        window.close();
+                        runCameraHull();
+                        runMenu(width, height);
                         break;
                     case 3:
                         std::cout << "Option 4 was pressed(exit)" << std::endl;

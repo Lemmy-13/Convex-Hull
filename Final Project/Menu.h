@@ -1,5 +1,6 @@
 #pragma once
 #include "VisualConvexHull.h"
+#include "Finger.h"
 #define  MAX_ITEMS 4
 
 class Menu
