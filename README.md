@@ -24,7 +24,7 @@
     <br />
     
     
-    <br />
+    
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
