@@ -22,12 +22,6 @@
   <p align="center">
     Created by William Robichaux, Aaron Tallardy, Lemuel Alvarez, Lucas Riccitelli
     <br />
-    
-    
-    
-    
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
