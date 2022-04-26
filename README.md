@@ -23,7 +23,7 @@
     Created by William Robichaux, Aaron Tallardy, Lemuel Alvarez, Lucas Riccitelli
     <br />
     
-    <br />
+    
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
