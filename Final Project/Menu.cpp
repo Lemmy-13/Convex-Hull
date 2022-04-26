@@ -3,7 +3,7 @@
 
 Menu::Menu(float width, float height)
 {
-    if(!font.loadFromFile("FSEX300.ttf"))
+    if(!font.loadFromFile("Menufiles/FSEX300.ttf"))
     {
 
     }
@@ -77,7 +77,7 @@ void Menu::runMenu(float width, float height)
     // -- Background -- //
     float frame_time = (float)1 / (float)60;
     sf::Texture background;
-    if (!background.loadFromFile("BG1.jpg"))
+    if (!background.loadFromFile("Menufiles/BG1.jpg"))
         exit(1);
     background.setRepeated(true);
 
@@ -131,7 +131,7 @@ void Menu::runMenu(float width, float height)
                         std::cout << "Option 3 was pressed" << std::endl;
                         //Here
                         window.close();
-                        //runCameraHull();
+                        runCameraHull();
                         runMenu(width, height);
                         break;
                     case 3:
