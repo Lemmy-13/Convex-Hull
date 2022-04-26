@@ -20,6 +20,8 @@ private:
 	void DrawGreenLine(Point p1, Point p2);//draws a green line between two points
 	Point NextToTop();//gets the point under h_visualStack.top
 
+	std::vector<Point> readfile(std::string file_name);//returns a vector of points taken from a file
+
 public:
 	//Constructors
 	visualConvexHull();
@@ -28,5 +30,5 @@ public:
 	//public functions
 
 	void visualConvexHullRun();//the run function
-    void playSound();
+	void runReadFile();//runs the readfrom file version
 };

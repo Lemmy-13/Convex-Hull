@@ -1,5 +1,6 @@
 #include "VisualConvexHull.h"
 #include <iostream>
+#include <sstream>
 
 //constructors
 visualConvexHull::visualConvexHull() {
@@ -102,6 +103,53 @@ void visualConvexHull::DrawGreenLine(Point p1, Point p2) {
 
 	//drawing it to the grahmScan object window. 
 	this->h_graham.m_window->draw(line);
+}
+
+std::vector<Point> visualConvexHull::readfile(std::string file_name) {
+	// Create the input filestream - opens the file & prepares it for reading
+	std::ifstream file(file_name);
+
+	// Creates a temporary vector to represent one row
+	std::vector<int> raw_coords;
+	std::pair<int, int> coords;
+	// Temporary string to hold a single line of the file
+	std::string str;
+
+	//a return vector of points
+	std::vector<Point> pointVec;
+
+	// Reads all lines in the file, 1 at at time
+	while (std::getline(file, str)) {
+		// Converts our string into a stringstream
+		std::istringstream ss(str);
+		// Temp double to store a converted value from a line
+		int token;
+		
+		//A temp Point to iterate into a list
+		//Point tempoint = Point();
+
+		// Reads all values from the stringstream (current row), converts to double
+		while (ss >> token) {
+			// Adds the converted value to the row
+			raw_coords.push_back(token);
+			//std::cout << token;
+		}
+		pointVec.push_back(Point(raw_coords[0],raw_coords[1]));
+		/*tempoint.x = raw_coords[0];
+		tempoint.y = raw_coords[1];*/
+		// Pushes our constructed vector of doubles to the 2D vector
+		//pointVec.push_back(tempoint);
+		raw_coords.clear();
+	}
+	return pointVec;
+}
+
+void visualConvexHull::runReadFile() {
+	std::vector<Point> readfilevec = this->readfile("testfile1.txt");
+	for (int x = 0; x < readfilevec.size(); x++) {
+		this->h_graham.BottomMost(readfilevec[x].x, readfilevec[x].y);
+	}
+	this->visualConvexHullRun();
 }
 
 

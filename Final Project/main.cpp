@@ -1,9 +1,8 @@
 #include "Menu.h"
-//#include "Finger.h"
 #include <iostream>
 
 int main()
 {
-    Menu jerry = Menu(1600,900);
-    //runCameraHull();
+    //creates the menu, it runs automatically after being created.
+    Menu fredrick = Menu(1600,900);
 }

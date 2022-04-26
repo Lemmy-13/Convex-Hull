@@ -3,7 +3,7 @@
 
 Menu::Menu(float width, float height)
 {
-    if(!font.loadFromFile("/Users/lemmy/Documents/Projects/Final/Menufiles/FSEX300.ttf"))
+    if(!font.loadFromFile("FSEX300.ttf"))
     {
 
     }
@@ -63,6 +63,11 @@ void Menu::runVisHull() {
     visualConvexHull jerry = visualConvexHull(); //a visual hull object to be run in the menu
     jerry.visualConvexHullRun();
 }
+//runs visual hull but reads from a file first
+void Menu::runReadHull() {
+    visualConvexHull henry = visualConvexHull(); //a visual hull object to be run in the menu
+    henry.runReadFile();
+}
 
 //used to run the menu that will promt the user into different parts of the program as menus do.
 void Menu::runMenu(float width, float height)
@@ -72,7 +77,7 @@ void Menu::runMenu(float width, float height)
     // -- Background -- //
     float frame_time = (float)1 / (float)60;
     sf::Texture background;
-    if (!background.loadFromFile("/Users/lemmy/Documents/Projects/Final/Menufiles/BG1.jpg"))
+    if (!background.loadFromFile("BG1.jpg"))
         exit(1);
     background.setRepeated(true);
 
@@ -117,13 +122,16 @@ void Menu::runMenu(float width, float height)
                         break;
                     case 1:
                         std::cout << "Option 2 was pressed" << std::endl;
-                        //Here
+                        window.close();
+                        this->runReadHull();
+                        runMenu(width, height);
+                        
                         break;
                     case 2:
                         std::cout << "Option 3 was pressed" << std::endl;
                         //Here
                         window.close();
-                        runCameraHull();
+                        //runCameraHull();
                         runMenu(width, height);
                         break;
                     case 3:

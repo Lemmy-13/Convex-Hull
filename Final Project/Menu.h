@@ -11,6 +11,7 @@ public:
 
             void runMenu(float width, float height);
             void runVisHull();
+            void runReadHull();
             void draw(sf::RenderWindow& window);
             void MoveUp();
             void MoveDown();
