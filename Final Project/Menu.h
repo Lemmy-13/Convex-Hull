@@ -9,12 +9,13 @@ public:
             ~Menu();
 
             void runMenu(float width, float height);
+            void runVisHull();
             void draw(sf::RenderWindow& window);
             void MoveUp();
             void MoveDown();
             int GetPressedItem() {return selectItem;}
 private:
-            visualConvexHull vis_hull;
+            
             int selectItem = 0;
             sf::Font font;
             sf::Text menu[MAX_ITEMS];

@@ -57,6 +57,14 @@ Menu::~Menu()
 
 //Loop to display on the screen
 
+//used to run the visual Convex hull from the menu
+void Menu::runVisHull() {
+    //his name is jerry 
+    visualConvexHull jerry = visualConvexHull(); //a visual hull object to be run in the menu
+    jerry.visualConvexHullRun();
+}
+
+//used to run the menu that will promt the user into different parts of the program as menus do.
 void Menu::runMenu(float width, float height) {
     sf::RenderWindow window(sf::VideoMode(width, height), "Menu");
 
@@ -103,7 +111,7 @@ void Menu::runMenu(float width, float height) {
                         std::cout << "Option 1 was pressed" << std::endl;
                         //Here
                         window.close();//closes the menu window
-                        this->vis_hull.visualConvexHullRun(); //runs visual convex hull
+                        this->runVisHull();//runs the visualConvexHull run thing
                         runMenu(width, height);//after the visual convexhull window closes/finishes the menu will run again.
                         break;
                     case 1:
