@@ -139,7 +139,7 @@ std::vector<cv::Point> getContours(cv::Mat img)
                     cv::Ptr<cv::freetype::FreeType2> ft2;
                     ft2 = cv::freetype::createFreeType2();
                     ft2->loadFontData( "/Users/lemmy/Documents/Projects/Menu/FSEX300.ttf", 0 );
-                    ft2->putText(img,numbersf,cv::Point(70,600), 100,cv::Scalar(0,255,0),3,8,false);
+                    ft2->putText(img,numbersf,cv::Point(70,600), 100,cv::Scalar(0, 255, 255),6,8,false);
 
                     approxPolyDP(contours[i],contours_poly[i],3,false);
                     boundRect[i]=boundingRect(contours_poly[i]);

@@ -3,7 +3,7 @@
 
 Menu::Menu(float width, float height)
 {
-    if(!font.loadFromFile("Menufiles/FSEX300.ttf"))
+    if(!font.loadFromFile("/Users/lemmy/Documents/Projects/Finalito/Menufiles/FSEX300.ttf"))
     {
 
     }
@@ -77,7 +77,7 @@ void Menu::runMenu(float width, float height)
     // -- Background -- //
     float frame_time = (float)1 / (float)60;
     sf::Texture background;
-    if (!background.loadFromFile("Menufiles/BG1.jpg"))
+    if (!background.loadFromFile("/Users/lemmy/Documents/Projects/Finalito/Menufiles/BG1.jpg"))
         exit(1);
     background.setRepeated(true);
 

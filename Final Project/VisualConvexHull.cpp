@@ -145,7 +145,7 @@ std::vector<Point> visualConvexHull::readfile(std::string file_name) {
 }
 
 void visualConvexHull::runReadFile() {
-	std::vector<Point> readfilevec = this->readfile("testfile1.txt");
+	std::vector<Point> readfilevec = this->readfile("/Users/lemmy/Documents/Projects/Finalito/testfile1.txt");
 	for (int x = 0; x < readfilevec.size(); x++) {
 		this->h_graham.BottomMost(readfilevec[x].x, readfilevec[x].y);
 	}
@@ -195,6 +195,7 @@ void visualConvexHull::visualConvexHullRun() {
 						(enter_pressed && lastrun))
 						&& !pause) {
 						this->h_graham.BottomMost(event.mouseButton.x, event.mouseButton.y);
+                        std::cout << "Numbers: " << this->h_graham.m_Points.size() << std::endl;
 					}
 				}
 			}
@@ -274,6 +275,26 @@ void visualConvexHull::visualConvexHullRun() {
 				sf::CircleShape whitedot(6);
 				whitedot.setPosition(this->h_graham.m_Points[i].x - 2, this->h_graham.m_Points[i].y - 2);
 				this->h_graham.m_window->draw(whitedot);
+
+                int game = h_graham.m_Points.size();
+
+                sf::Text text1;
+                sf::Font font1;
+
+                if(!font1.loadFromFile("/Users/lemmy/Documents/Projects/Finalito/Menufiles/FSEX300.ttf"))
+                {
+
+                }
+
+                text1.setFont(font1);
+                text1.setCharacterSize(150);
+                text1.setFillColor(sf::Color::Yellow);
+                std::stringstream ss;  // #include <sstream>
+                ss << game;
+                text1.setString( ss.str().c_str() );
+                text1.setPosition(70.f, 600.f);
+
+                this->h_graham.m_window->draw(text1);
 			}
 
 			//this draws the blues lines and green dots between each item
