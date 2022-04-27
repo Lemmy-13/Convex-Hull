@@ -1,9 +1,4 @@
 
-
-
-
-
-
   <h3 align="center">CSC 212 Final Project</h3>
 
   <p align="center">
@@ -29,6 +24,7 @@ We have three separate implementations of this algorithm:
 ### Link to Required Library(s)
 
 * [SFML](https://www.sfml-dev.org/)
+* [OpenCV](https://opencv.org/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
