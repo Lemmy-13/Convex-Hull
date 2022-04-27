@@ -1,12 +1,16 @@
-cmake_minimum_required(VERSION 3.14)
-project(HelloSFML)
+cmake_minimum_required(VERSION 3.21)
+project(Finalito)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES main.cpp)
-add_executable(HelloSFML ${SOURCE_FILES})
+#find_library(OpenCV)
+find_package(OpenCV)
+find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+
+include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(/usr/local/include)
 
-find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
-include_directories(${SFML_INCLUDE_DIRS})
-target_link_libraries(HelloSFML sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+add_executable(Finalito main.cpp ConvexHull.cpp Finger.cpp Menu.cpp VisualConvexHull.cpp)
+
+target_link_libraries(Finalito sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(Finalito ${OpenCV_LIBS})
